@@ -1,7 +1,17 @@
-# neighborhood-map
+# Philadelphia Coffeeshop Map
+---
 
+## Description
 
+This project was created within the Udacity FEND program.
 
+## How to use this app
+
+1. Download the contents of this repository or clone them from command line:
+```
+git clone https://github.com/kasiaphilly/neighborhood-map.git
+```
+2. Open the project folder, find the index.html file and open it in the browser.
 
 ## Resources
 
