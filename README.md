@@ -1,6 +1,8 @@
 # Philadelphia Coffeeshop Map
 ---
 
+### Author: Katarzyna Elliott-Maksymowicz
+
 ## Description
 
 This project was created within the Udacity FEND program.
@@ -21,25 +23,33 @@ npm start
 ```
 A new browser window should open automatically. If not, open your browser and go to http://localhost:3000/.
 
-## Running the app in production mode
-1. From command line, run:
-```
-npm run build
-```
-2. Using Python, start a simple HTTP server:
-- If you have Python 2.x, spin up the server with python -m SimpleHTTPServer 8000 (or some other port, if port 8000 is already in use.)
-- For Python 3.x, you can use python3 -m http.server 8000. If you don't have Python installed, navigate to Python's website to download and install the software.
-3. With your server running, go to the site: http://localhost:8000.
+## Dependencies
+
+HTML, CSS, JavaScript
+jQuery
+React
+Google Maps API
+Foursquare API
+Aria (for improving the a11y)
+The App implements a Service Worker for better offline experience
 
 
 ## Resources
 
-Ari Lerner, [How to Write a Google Maps React Component](https://www.fullstackreact.com/articles/how-to-write-a-google-maps-react-component/)
+Google Developers pages:
+[Google Maps](https://developers.google.com/maps)
+[Google Places](https://developers.google.com/places)
+
+[Foursquare developers](https://foursquare.com/developers/apps)
+
+[Asynchronous Loading code](https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/)
 
 [Google Maps API Geocoder Tool](https://google-developers.appspot.com/maps/documentation/utils/geocoder/)
 
-Icons from [Flaticon](https://www.flaticon.com/) by:
-- [Freepik](https://www.freepik.com)
+Map graphic design __coffee shop__ theme from: [snazzymaps](https://snazzymaps.com/style/89205/coffee-shop)
 
+Icons from [Flaticon](https://www.flaticon.com/) by: [Freepik](https://www.freepik.com)
 
-https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+Ari Lerner, [How to Write a Google Maps React Component](https://www.fullstackreact.com/articles/how-to-write-a-google-maps-react-component/)
+
+Saloni Malhotra, [Google Maps Marker Javascript](https://medium.com/@salonimalhotra1ind/google-maps-marker-with-javascript-4aab6a43f118)

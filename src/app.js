@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './styles.css';
-import { locations } from './data/locations.js';
-import { mapDesign } from './data/mapDesign.js';
 import Map from './components/map.js';
 import Sidebar from './components/sidebar.js';
 

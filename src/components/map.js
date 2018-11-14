@@ -2,22 +2,20 @@
 import React, { Component } from 'react'
 import $ from 'jquery'
 import PropTypes from 'prop-types'
-import * as FourSquareAPI from './API/FourSquare'
+import * as FourSquareAPI from './API/APPdata'
+import { GM_API } from './API/APPdata'
 import { mapDesign } from '../data/mapDesign.js'
+import { locations } from '../data/locations.js'
+import activePointer from '../img/active-pointer.png'
+import pointer from '../img/pointer.png'
 
-//initial position
-const WASHINGTON = {
-    lat: 38.903029,
-    lng: -77.033071
-}
-const CALLS_LIMIT = 5
-let pos = WASHINGTON
+let startingLocation = {lat: 39.968918, lng: -75.143}
 let newMap
 let newPlaces = []
 let newMarkers = []
 let newInfowindows = []
 let infowindow
-const type = 'restaurant'
+const type = 'cafe';
 
 class Map extends Component {
     state = {
@@ -25,11 +23,12 @@ class Map extends Component {
     }
     componentDidMount() {
         window.initMap = this.initMap
-        this.loadJS('https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD42M9x96sriIW2Q_dqn2Y57T6f3MpBe44&v=3&callback=initMap')
+        this.loadJS(`https://maps.googleapis.com/maps/api/js?libraries=places&key=${GM_API}&v=3&callback=initMap`)
     }
 
-    // code took from https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
-    // Asynchronous Loading
+    /* Asynchronous Loading
+    code source: https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
+    */
     loadJS = (src) => {
         document.getElementById('map').innerText = 'Loading...'
         var ref = window.document.getElementsByTagName("script")[0];
@@ -42,13 +41,16 @@ class Map extends Component {
           };
         ref.parentNode.insertBefore(script, ref);
     }
+
+
+
     //initialization Google Maps
     initMap = () => {
         // create new map
         newMap = new google.maps.Map(document.getElementById('map'), {
-            center: pos,
-            zoom: 13,
-            styles: mapDesign,        // customized graphic design
+            center: startingLocation,
+            zoom: 15,
+            styles: mapDesign,        // customized graphic design from: https://snazzymaps.com/style/89205/coffee-shop
             mapTypeControl: false,
         })
         // Get Places
@@ -56,10 +58,9 @@ class Map extends Component {
 
 
 
-
         //button FIND HERE
-        const findHere = document.getElementById('search');
-        findHere.addEventListener('click', function () {
+        const findPlaces = document.getElementById('search');
+        findPlaces.addEventListener('click', function () {
             //clear old search
             for (let item of thisMap.props.markers) {
                 item.setMap(null)
@@ -76,20 +77,20 @@ class Map extends Component {
             let bounds = newMap.getBounds()
             let service = new google.maps.places.PlacesService(newMap);
             service.nearbySearch({
-                location: pos,
-                radius: 5000,
+                location: startingLocation,
+                radius: 1000,
                 type: type,
                 bounds: bounds
             }, thisMap.callback);
             thisMap.props.updatePlaces(newPlaces)
         })
-        findHere.click();
+        findPlaces.click();
         this.props.updateMap(newMap)
 
     }
     callback = (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length && i < CALLS_LIMIT; i++) {
+            for (var i = 0; i < results.length && i < 5; i++) {
                 this.createMarker(results[i]);
             }
             //update places
@@ -97,63 +98,67 @@ class Map extends Component {
             this.props.updateMarkers(newMarkers)
             this.props.updateInfowindows(newInfowindows)
         } else if (status === 'ZERO_RESULTS') {
-            alert('No Restaurant in this area')
+            alert('No coffe around here...')
         } else {
-            alert(`Sorry, something went wrong with Google Maps Places:
+            alert(`Oops, something went wrong :(
             Status: ${status}`);
         }
     };
 
-    //add new marker
 
+    //add new marker
     createMarker = (place) => {
         let marker = new google.maps.Marker({
             name: place.name,
             position: place.geometry.location,
             animation: google.maps.Animation.DROP,
             map: newMap,
+            icon: activePointer,      // customized pointer symbol
             id: place.id
         })
         //this.setState((state) => ({ makers: state.markers.concat(newMarker) }))
         let lat = marker.getPosition().lat()
         let lng = marker.getPosition().lng()
-        // get some information from FourSwuare
-        this.fourSquare(lat, lng, place.name, marker, place)
+        // get FourSquare info
+        this.fourSquare(lat, lng, place.name, marker, place)          // change to APPdata ???
         // add place to places
         newPlaces.push(place)
         newMarkers.push(marker)
     }
 
 
-    //add new marker
-
-    createMarker = (place) => {
-        let marker = new google.maps.Marker({
-            name: place.name,
-            position: place.geometry.location,
-            animation: google.maps.Animation.DROP,
-            map: newMap,
-            id: place.id
-        })
-        //this.setState((state) => ({ makers: state.markers.concat(newMarker) }))
-        let lat = marker.getPosition().lat()
-        let lng = marker.getPosition().lng()
-        // get some information from FourSwuare
-        this.fourSquare(lat, lng, place.name, marker, place)
-        // add place to places
-        newPlaces.push(place)
-        newMarkers.push(marker)
-    }
+    /* create marker from list
+    let favPlaces []
+    favPlaces = locations;
+    createFavMarker = (place) => {
+          for (let i = 0; i < favPlaces.length; i++) {
+          let marker = new google.maps.Marker(
+            {
+              name: favPlaces.name,
+              position: new google.maps.LatLng(favPlaces[i].location.lat, favPlaces[i].location.lng),
+              address: favPlaces[i].location.address,
+              animation: google.maps.Animation.DROP,
+              map: newMap,
+              icon: activePointer,      // customized pointer symbol
+              id: favPlaces.venueId
+         })
+         //this.setState((state) => ({ makers: state.markers.concat(newMarker) }))
+         let lat = marker.getPosition().lat()
+         let lng = marker.getPosition().lng()
+         // add place to places
+         newPlaces.push(place)
+         newMarkers.push(marker)
+       }
+*/
 
     // get place information from fourSquare
     fourSquare = (lat, lng, name, marker, place) => {
-        return FourSquareAPI.getFourSquareInfo(lat, lng, name).then(result => {
+        return FourSquareAPI.getFSData(lat, lng, name).then(result => {
             if (result.meta.code !== 200 || result === 'err') {
                 this.setState({ fourSquareContent:
                         `<section>
-                            <p>Sorry, something went wrong</p>
-                            <p>ERROR: ${result.meta.code}</p>
-                            <p>${result.meta.errorDetail}</p>
+                            <p>Oops!
+                            Something went wrong :(</p>
                         </section>`
                     })
             } else {
@@ -169,9 +174,9 @@ class Map extends Component {
 
                 this.setState({
                     fourSquareContent: `
-                        <section>
+                        <section class="info-window">
                                 <h3 class='info-content' tabindex=0>${place.name}</h3>
-                                <h4 tabindex=0><p>Restaurant Category :</h4>
+                                <h4 tabindex=0><p>Category :</h4>
                                 <p tabindex=0>${categories}</p>
                                 <img src='${image}' alt='an image of ${place.name}' tabindex=0>
                                 <p tabindex=0>Rating: ${rating}</p>
@@ -191,29 +196,31 @@ class Map extends Component {
             id: place.id,
         });
 
-        //set focus on infowindow (Accessibility)
+        //set a11y focus on infowindow
         infowindow.addListener('domready', function () {
             $('.info-content').focus()
         })
 
         marker.infowindow = infowindow
 
-        // open information when mouse is over
-        marker.addListener('mouseover', function () {
-            marker.infowindow.open(newMap, marker)
-            $('.sidebar').addClass('close')
+        //open info window on click
+        marker.addListener('click', function () {
+            infowindow.open(newMap, marker)
         })
 
-        //close information when mouse in out
-        marker.addListener('mouseout', function () {
-            marker.infowindow.close()
-            $('.sidebar').removeClass('close')
-        })
+        //change pointer icon on mouseover
+        marker.addListener('mouseover', function() {
+          this.setIcon(pointer);
+        });
+        //change pointer icon back on mouseout
+        marker.addListener('mouseout', function() {
+          this.setIcon(activePointer);
+        });
 
 
         //add element to newInfowindows array
         newInfowindows.push(infowindow)
-        return marker
+        return infowindow  // marker ?????
     }
 
     render() {
@@ -223,7 +230,7 @@ class Map extends Component {
     }
 }
 
-//Check if the Type of variables are correct
+//Check variable types
 Map.propTypes = {
     map: PropTypes.object.isRequired,
     infowindows: PropTypes.array.isRequired,
@@ -234,5 +241,6 @@ Map.propTypes = {
     updateMarkers: PropTypes.func.isRequired,
     updatePlaces: PropTypes.func.isRequired
 }
+
 
 export default Map;

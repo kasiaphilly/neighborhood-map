@@ -40,12 +40,14 @@ export default class Sidebar extends Component {
         const { myPlaces } = this.props
         return (
             <nav className='sidebar'>
-                <div role='button' aria-label='open or close side menu' onKeyPress={this.toggleMenu} onClick={this.toggleMenu} className='hamburger-icon' tabIndex='0'></div>
-                <span className="text">Philadelphia Coffeeshops</span>
-                <input id='search' aria-label='search on map' type='button' value='Find coffeeshops'/>
+                <div role='button' aria-label='open or close side menu' onKeyPress={this.toggleMenu} onClick={this.toggleMenu} className='hamburger-icon' tabIndex='0' alt="menu icon"></div>
+                <div className="text">Philly Coffee</div>
+                <div id = "searchForm" aria-label='search form'>
+                    <input id='search' aria-label='search button' type='button' value='search'/>
                     <input aria-label='filter show' className='places-filter' type='text'
-                        onChange={(e) => { this.props.updateFilter(e.target.value) }} placeholder='Filter' />
-                    <ul id='places-list' aria-label='list places'>
+                        onChange={(e) => { this.props.updateFilter(e.target.value) }} placeholder='search 4 coffee' />
+                </div>
+                    <ul id='places-list' aria-label='coffeeshop list'>
                         {
                             myPlaces && (
                                 myPlaces.map((place) => (
