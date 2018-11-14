@@ -1,8 +1,7 @@
 /*global google*/
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import $ from 'jquery'
-import menuIcon from '../img/menu64.png';
+import PropTypes from 'prop-types'
 
 export default class Sidebar extends Component {
 
@@ -54,7 +53,8 @@ export default class Sidebar extends Component {
                                 myPlaces.map((place) => (
                                     <li key={place.id} className='button-list'>
                                         <button className='button' type='button' onClick={this.chosePointer} value={place.id}>
-                                            {place.name}</button>
+                                            {place.name}
+                                            </button>
                                     </li>
                                 ))
                             )}
