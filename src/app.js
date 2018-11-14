@@ -10,39 +10,39 @@ class App extends Component {
     places: [],
     markers: [],
     infowindows: [],
-    filteredPlace: [],
+    myPlace: [],
     map: {}
   }
 
-  //place update
+  // update places
   updatePlaces = (places) => {
     this.setState({
       places: places,
-      filteredPlace: places
+      myPlace: places
     })
   }
 
-  // markers update
+  // update markers
   updateMarkers = (markers) => {
     this.setState({ markers })
   }
 
-  // infowindow update
+  // update infowindows
   updateInfowindows = (infowindows) => {
     this.setState({ infowindows })
   }
 
-  //map update
+  // update the map
   updateMap = (map) => {
     this.setState({ map })
   }
 
-  // filter the searched items
-  updateFilter = (query) => {
+  // filter the searched items  TODO UPDATE!
+  filterResults = (query) => {
     if (query) {
-      //find searched item from places
+
       let result = this.state.places.filter((place) => place.name.toLowerCase().includes(query.toLowerCase()));
-      //find searched item from marker
+
       let markersResult = this.state.markers.filter((marker) => marker.name.toLowerCase().includes(query.toLowerCase()));
       // set all marker not visible
       this.state.markers.forEach(marker => {
@@ -53,26 +53,25 @@ class App extends Component {
         marker.setVisible(true)
       })
       this.setState({
-        filteredPlace: result
+        myPlace: result
       })
     } else {
-      //set all marker visible when the query is empty
       this.state.markers.forEach(function (marker) {
         marker.setVisible(true)
       })
       this.setState({
-        filteredPlace: this.state.places
+        myPlace: this.state.places
       })
     }
   }
 
   render() {
-    const { map, places, markers, infowindows, filteredPlace } = this.state
+    const { map, places, markers, infowindows, myPlace } = this.state
     return (
       <main className="App">
 
         <Sidebar map={map} infowindows={infowindows} markers={markers} places={places}
-          filteredPlace={filteredPlace} updateFilter={this.updateFilter} />
+          myPlace={myPlace} filterResults={this.filterResults} />
         <Map map={map} infowindows={infowindows} markers={markers} places={places}
           updateMap={this.updateMap} updateInfowindows={this.updateInfowindows} updateMarkers={this.updateMarkers} updatePlaces={this.updatePlaces}
         />

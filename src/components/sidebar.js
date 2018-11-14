@@ -17,7 +17,7 @@ export default class Sidebar extends Component {
                 if (marker.id === e.target.value) {
                     this.props.infowindows.filter(infowindow => {
                         if (infowindow.id === marker.id) {
-                            //set animation for selected marker
+                            //set marker animation
                             if (marker.getAnimation() !== null) {
                                 marker.setAnimation(null)
                             } else {
@@ -47,6 +47,7 @@ export default class Sidebar extends Component {
                     <input aria-label='filter show' className='places-filter' type='text'
                         onChange={(e) => { this.props.updateFilter(e.target.value) }} placeholder='search 4 coffee' />
                 </div>
+                <div className='search-results'>
                     <ul id='places-list' aria-label='coffeeshop list'>
                         {
                             myPlaces && (
@@ -58,6 +59,7 @@ export default class Sidebar extends Component {
                                 ))
                             )}
                     </ul>
+                </div>
             </nav>
         )
     }

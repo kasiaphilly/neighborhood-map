@@ -49,7 +49,7 @@ class Map extends Component {
         // create new map
         newMap = new google.maps.Map(document.getElementById('map'), {
             center: startingLocation,
-            zoom: 15,
+            zoom: 16,
             styles: mapDesign,        // customized graphic design from: https://snazzymaps.com/style/89205/coffee-shop
             mapTypeControl: false,
         })
@@ -188,9 +188,9 @@ class Map extends Component {
         })
     }
 
-    //Add Info
+    //Add infowindow
     addInfowindow = (marker, place) => {
-        //Add fourSquare Information
+        //Add data from FS
         infowindow = new google.maps.InfoWindow({
             content: this.state.fourSquareContent,
             id: place.id,
@@ -204,9 +204,19 @@ class Map extends Component {
         marker.infowindow = infowindow
 
         //open info window on click
+
+        let clicks=0;
+
         marker.addListener('click', function () {
+        if (clicks%2===0){
             infowindow.open(newMap, marker)
-        })
+            clicks++;
+          } else {
+            infowindow.close()
+            clicks++;
+          }
+        }
+      )
 
         //change pointer icon on mouseover
         marker.addListener('mouseover', function() {
@@ -220,7 +230,7 @@ class Map extends Component {
 
         //add element to newInfowindows array
         newInfowindows.push(infowindow)
-        return infowindow  // marker ?????
+        return infowindow
     }
 
     render() {
@@ -228,18 +238,6 @@ class Map extends Component {
             <div id='map' tabIndex='-1' aria-describedby="map view applications" aria-hidden="true"></div>
         )
     }
-}
-
-//Check variable types
-Map.propTypes = {
-    map: PropTypes.object.isRequired,
-    infowindows: PropTypes.array.isRequired,
-    markers: PropTypes.array.isRequired,
-    places: PropTypes.array.isRequired,
-    updateMap: PropTypes.func.isRequired,
-    updateInfowindows: PropTypes.func.isRequired,
-    updateMarkers: PropTypes.func.isRequired,
-    updatePlaces: PropTypes.func.isRequired
 }
 
 
