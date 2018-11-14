@@ -16,7 +16,7 @@
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 1.4em;
 }
 
 .App-intro {
@@ -49,6 +49,20 @@
   min-width: 250px;
 }
 
+.sidebar .button {
+  background: #444;
+  color: #f2f2f2;
+  border: 0;
+  margin: 10px;
+  text-align: left;
+  width: 90%
+}
+
+.button:hover {
+  color: #c29a60;
+  font-size: 15px;
+}
+
 .sidebar .hamburger-icon {
   overflow: auto;
   display: block;
@@ -59,15 +73,6 @@
   background-position: center;
   background-size: 50px;
   font-size: 0;
-}
-
-.sidebar .button {
-  background: #444;
-  color: #f2f2f2;
-  border: 0;
-  margin: 10px;
-  text-align: left;
-  width: 90%
 }
 
 .info-window {
@@ -161,6 +166,11 @@ li {
     margin-left: 0;
   }
 
+  .text {
+    font-weight: 220;
+    margin: 20px;
+  }
+
   .sidebar {
     width: 100%;
     display: grid;
@@ -168,6 +178,7 @@ li {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    max-height: 50vw;
   }
 
   .sidebar .hamburger-icon {
@@ -175,15 +186,9 @@ li {
     text-align: left;
   }
 
-  .text {
-    font-weight: 200;
-    margin: 20px;
-  }
-
   .gm-style-iw {
     width: 50vw;
     height: 40vh;
     font-weight: 100;
   }
-
 }

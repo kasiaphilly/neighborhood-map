@@ -25,13 +25,13 @@ A new browser window should open automatically. If not, open your browser and go
 
 ## Dependencies
 
-HTML, CSS, JavaScript
-jQuery
-React
-Google Maps API
-Foursquare API
-Aria (for improving the a11y)
-The App implements a Service Worker for better offline experience
+- HTML, CSS, JavaScript
+- jQuery
+- React
+- Google Maps API
+- Foursquare API
+- Aria (for improving the a11y)
+- Service Worker (for better offline experience)
 
 
 ## Resources
